@@ -1,13 +1,13 @@
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "nicoarch" }, { name: "description", content: "nicoarch" }];
+  return [{ title: "Tasks | nicoarch" }];
 };
 
 export default function Index() {
   return (
     <div className="font-sans p-4">
-      <h1 className="text-3xl">Home</h1>
+      <h1 className="text-3xl">Tasks</h1>
     </div>
   );
 }
