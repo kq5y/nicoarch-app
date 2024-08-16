@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "nicoarch-app",
   "private": true,
   "sideEffects": false,
   "type": "module",
