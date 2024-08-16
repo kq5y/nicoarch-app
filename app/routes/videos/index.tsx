@@ -1,7 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Videos | nicoarch" }];
+  return [
+    { title: "Videos | nicoarch" },
+    { name: "description", content: "nicoarch" },
+  ];
 };
 
 export default function Index() {
