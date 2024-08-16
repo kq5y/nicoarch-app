@@ -1,11 +1,6 @@
-import { Document, model, Schema, Types } from "mongoose";
+import { model, Schema } from "mongoose";
 
-interface ICount {
-  view: number;
-  comment: number;
-  mylist: number;
-  like: number;
-}
+import type { ICount, IVideo } from "~/@types/models";
 
 const CountSchema = new Schema<ICount>({
   view: {
@@ -25,18 +20,6 @@ const CountSchema = new Schema<ICount>({
     required: true,
   },
 });
-
-interface IVideo extends Document {
-  title: string;
-  watchId: string;
-  registeredAt: Date;
-  count: ICount;
-  ownerId: Types.ObjectId;
-  duration: number;
-  description: string;
-  taskId: Types.ObjectId;
-  assetId: string;
-}
 
 const VideoSchema = new Schema<IVideo>(
   {

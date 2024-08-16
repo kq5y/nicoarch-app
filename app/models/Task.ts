@@ -1,13 +1,6 @@
-import { Document, model, Schema, Types } from "mongoose";
+import { model, Schema } from "mongoose";
 
-type Status = "queued" | "fetching" | "downloading" | "completed" | "failed";
-
-interface ITask extends Document {
-  watchId: string;
-  status: Status;
-  videoId: Types.ObjectId | null;
-  error: string | null;
-}
+import type { ITask } from "~/@types/models";
 
 const TaskSchema = new Schema<ITask>(
   {
