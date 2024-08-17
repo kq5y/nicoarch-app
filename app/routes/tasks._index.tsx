@@ -45,7 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   try {
     await connectMongo();
     const count = await Task.countDocuments();
-    if (page < 1 || page > Math.ceil(count / 5)) {
+    if (count > 0 && (page < 1 || page > Math.ceil(count / 5))) {
       return redirect(`/tasks`, { status: 302 });
     }
     const tasks = (

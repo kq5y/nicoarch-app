@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   try {
     await connectMongo();
     const count = await Video.countDocuments();
-    if (page < 1 || page > Math.ceil(count / 5)) {
+    if (count > 0 && (page < 1 || page > Math.ceil(count / 5))) {
       return redirect(`/videos`, { status: 302 });
     }
     const videos = (
