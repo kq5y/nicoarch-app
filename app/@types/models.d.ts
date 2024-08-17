@@ -7,6 +7,8 @@ interface ITask extends Document {
   status: Status;
   videoId: Types.ObjectId | null;
   error: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface IUser extends Document {
@@ -15,6 +17,8 @@ interface IUser extends Document {
   description: string;
   registeredVersion: string;
   assetId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface ICount {
@@ -34,4 +38,6 @@ interface IVideo extends Document {
   description: string;
   taskId: Types.ObjectId;
   assetId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

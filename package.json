@@ -17,11 +17,12 @@
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
     "@remix-run/serve": "^2.11.2",
+    "ioredis": "^5.4.1",
     "isbot": "^4.1.0",
     "mongoose": "^8.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "redis": "^4.7.0"
+    "remix-typedjson": "^0.4.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.11.2",

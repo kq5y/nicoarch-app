@@ -1,5 +1,6 @@
-import { model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
+import type { Model } from "mongoose";
 import type { IUser } from "~/@types/models";
 
 const UserSchema = new Schema<IUser>(
@@ -32,4 +33,8 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-export default model<IUser>("User", UserSchema);
+interface UserModel extends Model<IUser> {}
+
+export default mongoose.models.User
+  ? (mongoose.models.User as UserModel)
+  : mongoose.model<IUser, UserModel>("User", UserSchema);

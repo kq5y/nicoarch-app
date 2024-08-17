@@ -27,9 +27,11 @@ export const action: ActionFunction = async ({ request }) => {
     try {
       await connectMongo();
       const task = await Task.create({ watchId });
-      const redisClient = await connectRedis();
-      await redisClient.lPush("tasks", task.id);
-    } catch {
+      const redisClient = connectRedis();
+      await redisClient.lpush("tasks", task.id);
+      redisClient.disconnect();
+    } catch (error) {
+      console.error(error);
       return { error: "エラーが発生しました。" };
     }
     return redirect(`/tasks`);

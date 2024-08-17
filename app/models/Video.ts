@@ -1,5 +1,6 @@
-import { model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
+import type { Model } from "mongoose";
 import type { ICount, IVideo } from "~/@types/models";
 
 const CountSchema = new Schema<ICount>({
@@ -69,4 +70,8 @@ const VideoSchema = new Schema<IVideo>(
   }
 );
 
-export default model<IVideo>("Video", VideoSchema);
+interface VideoModel extends Model<IVideo> {}
+
+export default mongoose.models.Video
+  ? (mongoose.models.Video as VideoModel)
+  : mongoose.model<IVideo, VideoModel>("Video", VideoSchema);

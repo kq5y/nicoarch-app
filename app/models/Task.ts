@@ -1,5 +1,6 @@
-import { model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
+import type { Model } from "mongoose";
 import type { ITask } from "~/@types/models";
 
 const TaskSchema = new Schema<ITask>(
@@ -29,4 +30,8 @@ const TaskSchema = new Schema<ITask>(
   }
 );
 
-export default model<ITask>("Task", TaskSchema);
+interface TaskModel extends Model<ITask> {}
+
+export default mongoose.models.Task
+  ? (mongoose.models.Task as TaskModel)
+  : mongoose.model<ITask, TaskModel>("Task", TaskSchema);
