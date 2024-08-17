@@ -52,5 +52,6 @@
   },
   "overrides": {
     "rollup": "4.15.0"
-  }
+  },
+  "packageManager": "pnpm@9.5.0"
 }
