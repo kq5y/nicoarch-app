@@ -59,7 +59,7 @@ const VideoSchema = new Schema<IVideo>(
       ref: "Task",
       required: true,
     },
-    assetId: {
+    contentId: {
       type: String,
       required: true,
       unique: true,

@@ -16,7 +16,7 @@ interface IUser extends Document {
   nickname: string;
   description: string;
   registeredVersion: string;
-  assetId: string;
+  contentId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,7 +37,7 @@ interface IVideo extends Document {
   duration: number;
   description: string;
   taskId: Types.ObjectId;
-  assetId: string;
+  contentId: string;
   createdAt: Date;
   updatedAt: Date;
 }
