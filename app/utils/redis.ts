@@ -7,7 +7,7 @@ function connectRedis() {
     throw new Error("REDIS_URL is not defined");
   }
 
-  return new Redis(REDIS_URL);
+  return new Redis(REDIS_URL, { db: 0 });
 }
 
 export default connectRedis;
