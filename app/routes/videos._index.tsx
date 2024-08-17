@@ -75,7 +75,7 @@ export default function Index() {
                   className="border-b border-gray-200 py-2"
                 >
                   <img
-                    src={`/assets/image/thumbnail/${video.assetId}.png`}
+                    src={`/contents/image/thumbnail/${video.assetId}.png`}
                     alt="thumbnail"
                   />
                   <div>

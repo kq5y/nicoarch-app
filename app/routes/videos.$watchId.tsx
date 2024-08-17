@@ -54,7 +54,7 @@ export default function Index() {
         <div>
           <h1 className="text-3xl mb-2">{loaderData.video.title}</h1>
           <ReactPlayer
-            url={`/assets/video/${loaderData.video.assetId}.mp4`}
+            url={`/contents/video/${loaderData.video.assetId}.mp4`}
             controls
           />
         </div>
