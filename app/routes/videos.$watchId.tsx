@@ -36,7 +36,8 @@ export const loader: LoaderFunction = async ({ params }) => {
       },
       200
     );
-  } catch {
+  } catch (e) {
+    console.error(e);
     return typedjson({ error: "エラーが発生しました。" }, 500);
   }
 };
