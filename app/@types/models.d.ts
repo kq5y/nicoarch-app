@@ -42,3 +42,20 @@ interface IVideo extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+interface IComment extends Document {
+  commentId: string;
+  body: string;
+  commands: string[];
+  isPremium: boolean;
+  nicoruCount: number;
+  no: number;
+  postedAt: Date;
+  score: number;
+  source: string;
+  userId: string;
+  vposMs: number;
+  videoId: Types.ObjectId;
+  threadId: string;
+  fork: string;
+}
