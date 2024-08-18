@@ -17,6 +17,9 @@ importers:
       '@remix-run/serve':
         specifier: ^2.11.2
         version: 2.11.2(typescript@5.3.3)
+      '@xpadev-net/niconicomments':
+        specifier: ^0.2.72
+        version: 0.2.72
       ioredis:
         specifier: ^5.4.1
         version: 5.4.1
@@ -919,6 +922,9 @@ packages:
 
   '@web3-storage/multipart-parser@1.0.0':
     resolution: {integrity: sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==}
+
+  '@xpadev-net/niconicomments@0.2.72':
+    resolution: {integrity: sha512-SEZOewUTFQGAqzPk6DqG3pjs5j/wdLAgqDQONymDf8yUZtw2abs929/minAyhZkt8pn5dVa964nfzsdu24glXQ==}
 
   '@zxing/text-encoding@0.9.0':
     resolution: {integrity: sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==}
@@ -4500,6 +4506,8 @@ snapshots:
   '@vanilla-extract/private@1.0.5': {}
 
   '@web3-storage/multipart-parser@1.0.0': {}
+
+  '@xpadev-net/niconicomments@0.2.72': {}
 
   '@zxing/text-encoding@0.9.0':
     optional: true

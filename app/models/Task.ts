@@ -13,7 +13,14 @@ const TaskSchema = new Schema<ITask>(
       type: String,
       required: true,
       default: "queued",
-      enum: ["queued", "fetching", "downloading", "completed", "failed"],
+      enum: [
+        "queued",
+        "fetching",
+        "downloading",
+        "comment",
+        "completed",
+        "failed",
+      ],
     },
     videoId: {
       type: Schema.Types.ObjectId,

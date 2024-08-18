@@ -1,6 +1,12 @@
 import type { Document, Types } from "mongoose";
 
-type Status = "queued" | "fetching" | "downloading" | "completed" | "failed";
+type Status =
+  | "queued"
+  | "fetching"
+  | "downloading"
+  | "comment"
+  | "completed"
+  | "failed";
 
 interface ITask extends Document {
   watchId: string;

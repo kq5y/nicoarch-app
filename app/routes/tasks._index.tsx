@@ -23,6 +23,8 @@ function statusString(status: Status) {
       return "情報取得中";
     case "downloading":
       return "ダウンロード中";
+    case "comment":
+      return "コメント取得中";
     case "completed":
       return "完了";
     case "failed":
