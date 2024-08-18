@@ -36,6 +36,7 @@ interface IVideo extends Document {
   ownerId: Types.ObjectId;
   duration: number;
   description: string;
+  shortDescription: string;
   taskId: Types.ObjectId;
   contentId: string;
   createdAt: Date;

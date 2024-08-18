@@ -46,17 +46,21 @@ export default function Index() {
   return (
     <div className="w-full max-w-3xl mx-auto mt-4 px-4">
       {loaderData.error || !loaderData.video ? (
-        <div>
+        <div className="w-full max-w-3xl mx-auto mt-4 px-4">
           <h1 className="text-3xl mb-2">Not Found</h1>
           <p>{loaderData.error}</p>
         </div>
       ) : (
-        <div>
+        <div className="w-full max-w-3xl mx-auto mt-4 px-4">
           <h1 className="text-3xl mb-2">{loaderData.video.title}</h1>
-          <ReactPlayer
-            url={`/contents/video/${loaderData.video.contentId}.mp4`}
-            controls
-          />
+          <div className="aspect-video bg-zinc-900 flex justify-center w-full max-w-3xl">
+            <ReactPlayer
+              height="100%"
+              width="auto"
+              url={`/contents/video/${loaderData.video.contentId}.mp4`}
+              controls
+            />
+          </div>
         </div>
       )}
     </div>

@@ -55,6 +55,10 @@ const VideoSchema = new Schema<IVideo>(
       type: String,
       required: true,
     },
+    shortDescription: {
+      type: String,
+      required: true,
+    },
     taskId: {
       type: Schema.Types.ObjectId,
       ref: "Task",

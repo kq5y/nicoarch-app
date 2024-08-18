@@ -72,15 +72,17 @@ export default function Index() {
                 <NavLink
                   key={i}
                   to={`/videos/${video.watchId}`}
-                  className="border-b border-gray-200 py-2"
+                  className="border-b border-gray-200 py-2 flex h-28 gap-2"
                 >
                   <img
                     src={`/contents/image/thumbnail/${video.contentId}.jpg`}
                     alt="thumbnail"
                   />
-                  <div>
+                  <div className="flex flex-col overflow-auto">
                     <h2 className="text-xl">{video.title}</h2>
-                    <p className="text-gray-500">{video.description}</p>
+                    <p className="text-gray-500 line-clamp-3">
+                      {video.shortDescription}
+                    </p>
                   </div>
                 </NavLink>
               ))}

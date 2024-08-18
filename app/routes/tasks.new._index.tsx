@@ -28,7 +28,6 @@ export const action: ActionFunction = async ({ request }) => {
       await connectMongo();
       const task = await Task.create({ watchId });
       const redisClient = connectRedis();
-      console.log("rpush", String(task.id));
       await redisClient.rpush("tasks", String(task.id));
       redisClient.disconnect();
     } catch (error) {
