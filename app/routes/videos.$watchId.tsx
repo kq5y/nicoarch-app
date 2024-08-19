@@ -1,5 +1,7 @@
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useEffect, useRef } from "react";
 
+import NiconiComments from "@xpadev-net/niconicomments";
 import ReactPlayer from "react-player";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
@@ -53,6 +55,45 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function Index() {
   const loaderData = useTypedLoaderData<LoaderData>();
+  const niconicommentsRef = useRef<NiconiComments | undefined>(undefined);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (!canvasRef.current || !videoRef.current || !loaderData.video) {
+      return;
+    }
+    niconicommentsRef.current = new NiconiComments(
+      canvasRef.current,
+      [
+        {
+          comments: (loaderData.comments || []).map((comment) => ({
+            id: comment.commentId,
+            isMyPost: false,
+            ...comment,
+          })),
+          id: "0",
+          fork: "main",
+          commentCount: 0,
+        },
+      ],
+      { video: videoRef.current }
+    );
+    return () => {
+      niconicommentsRef.current = undefined;
+    };
+  }, [loaderData.comments, loaderData.video]);
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      if (!videoRef.current || !niconicommentsRef.current) {
+        return;
+      }
+      const vposMs = Math.floor(videoRef.current.currentTime * 1000);
+      niconicommentsRef.current.drawCanvas(Math.floor(vposMs / 10));
+    }, 1);
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, []);
   return (
     <div className="w-full max-w-3xl mx-auto mt-4 px-4">
       {!loaderData.video ? (
@@ -69,11 +110,15 @@ export default function Index() {
                 height="100%"
                 width="auto"
                 url={`/contents/video/${loaderData.video.contentId}.mp4`}
+                videoRef={videoRef}
                 controls
               />
             </div>
             <div className="w-full h-full absolute top-0 left-0 z-20 opacity-100 pointer-events-none">
-              <canvas className="w-full h-full absolute top-0 left-0 touch-none" />
+              <canvas
+                className="w-full h-full absolute top-0 left-0 touch-none"
+                ref={canvasRef}
+              />
             </div>
           </div>
         </div>
