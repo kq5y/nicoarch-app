@@ -7,8 +7,7 @@ import Comment from "~/models/Comment";
 import Video from "~/models/Video";
 import connectMongo from "~/utils/mongo";
 
-import type { IComment } from "@xpadev-net/niconicomments";
-import type { IVideo } from "~/@types/models";
+import type { IComment, IVideo } from "~/@types/models";
 
 interface LoaderData {
   error?: string;
@@ -29,7 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     await connectMongo();
     const video = await Video.findOne({
       watchId,
-    });
+    }).lean();
     if (!video) {
       return typedjson({ error: "動画が存在しません。" }, 404);
     }
@@ -56,10 +55,10 @@ export default function Index() {
   const loaderData = useTypedLoaderData<LoaderData>();
   return (
     <div className="w-full max-w-3xl mx-auto mt-4 px-4">
-      {loaderData.error || !loaderData.video ? (
+      {!loaderData.video ? (
         <div className="w-full max-w-3xl mx-auto mt-4 px-4">
           <h1 className="text-3xl mb-2">Not Found</h1>
-          <p>{loaderData.error}</p>
+          <p>{loaderData.error || "動画が見つかりませんでした。"}</p>
         </div>
       ) : (
         <div className="w-full max-w-3xl mx-auto mt-4 px-4">

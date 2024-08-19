@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         .sort({ createdAt: -1 })
         .limit(5)
         .skip((page - 1) * 5)
-        .exec()
+        .lean()
     ).map((video) => video.toObject<IVideo>());
     return typedjson({ videos, count, page }, 200);
   } catch {

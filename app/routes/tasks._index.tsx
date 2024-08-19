@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         .sort({ createdAt: -1 })
         .limit(5)
         .skip((page - 1) * 5)
-        .exec()
+        .lean()
     ).map((task) => task.toObject<ITask>());
     return typedjson({ tasks, count, page }, 200);
   } catch {
