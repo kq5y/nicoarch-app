@@ -2,13 +2,14 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useEffect, useRef } from "react";
 
 import NiconiComments from "@xpadev-net/niconicomments";
-import ReactPlayer from "react-player/file";
+import ReactFilePlayer from "react-player/file";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import Comment from "~/models/Comment";
 import Video from "~/models/Video";
 import connectMongo from "~/utils/mongo";
 
+import type ReactPlayer from "react-player";
 import type { IComment, IVideo } from "~/@types/models";
 
 interface LoaderData {
@@ -51,8 +52,11 @@ export default function Index() {
   const loaderData = useTypedLoaderData<LoaderData>();
   const niconicommentsRef = useRef<NiconiComments | undefined>(undefined);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const commentSmoothingRef = useRef({ offset: 0, timestamp: 0 });
+  const handlePlayerReady = (player: ReactPlayer) => {
+    videoRef.current = player.getInternalPlayer() as HTMLVideoElement;
+  };
   useEffect(() => {
     if (!videoRef.current) {
       return;
@@ -126,11 +130,11 @@ export default function Index() {
           <h1 className="text-3xl mb-2">{loaderData.video.title}</h1>
           <div className="relative aspect-video bg-zinc-900 w-full max-w-3xl">
             <div className="w-full h-full flex justify-center absolute top-0 left-0 z-10 pointer-events-auto">
-              <ReactPlayer
+              <ReactFilePlayer
                 height="100%"
                 width="auto"
                 url={`/contents/video/${loaderData.video.contentId}.mp4`}
-                videoRef={videoRef}
+                onReady={handlePlayerReady}
                 controls
               />
             </div>
