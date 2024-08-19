@@ -156,6 +156,8 @@ export default function Index() {
               <canvas
                 className="w-full h-full absolute top-0 left-0 touch-none"
                 ref={canvasRef}
+                width={1920}
+                height={1080}
               />
             </div>
           </div>
