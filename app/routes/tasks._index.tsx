@@ -113,7 +113,7 @@ export default function Index() {
                       )}
                     </td>
                     <td className="px-6 py-3">
-                      {`${statusString(task.status)}${task.status == "comment" && task.commentCount && "(" + task.commentCount.toString() + ")"}`}
+                      {`${statusString(task.status)}${task.status == "comment" && task.commentCount ? "(" + task.commentCount.toString() + ")" : ""}`}
                     </td>
                     <td className="px-6 py-3">
                       {task.createdAt.toLocaleString("ja-JP", {
