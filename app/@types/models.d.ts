@@ -13,6 +13,7 @@ interface ITask extends Document {
   status: Status;
   videoId: Types.ObjectId | null;
   error: string | null;
+  commentCount: number | null;
   createdAt: Date;
   updatedAt: Date;
 }

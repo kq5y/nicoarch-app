@@ -31,6 +31,11 @@ const TaskSchema = new Schema<ITask>(
       type: String,
       required: false,
     },
+    commentCount: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
   },
   {
     timestamps: true,
