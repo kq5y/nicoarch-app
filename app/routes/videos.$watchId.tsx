@@ -90,15 +90,25 @@ export default function Index() {
         {
           comments: (loaderData.comments || []).map((comment) => ({
             id: comment.commentId,
+            no: comment.no,
+            vposMs: comment.vposMs,
+            body: comment.body,
+            commands: comment.commands,
+            userId: comment.userId,
+            isPremium: comment.isPremium,
+            score: comment.score,
+            postedAt: comment.postedAt.toISOString(),
+            nicoruCount: comment.nicoruCount,
+            nicoruId: null,
+            source: comment.source,
             isMyPost: false,
-            ...comment,
           })),
           id: "0",
           fork: "main",
           commentCount: 0,
         },
       ],
-      { video: videoElement, format: "v1" }
+      { format: "v1" }
     );
     console.log("niconicommentsRef", niconicommentsRef.current);
     return () => {
