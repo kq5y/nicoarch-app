@@ -1,5 +1,5 @@
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import NiconiComments from "@xpadev-net/niconicomments";
 import ReactFilePlayer from "react-player/file";
@@ -52,35 +52,36 @@ export default function Index() {
   const loaderData = useTypedLoaderData<LoaderData>();
   const niconicommentsRef = useRef<NiconiComments | undefined>(undefined);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(
+    null
+  );
   const commentSmoothingRef = useRef({ offset: 0, timestamp: 0 });
   const handlePlayerReady = (player: ReactPlayer) => {
-    videoRef.current = player.getInternalPlayer() as HTMLVideoElement;
+    setVideoElement(player.getInternalPlayer() as HTMLVideoElement);
   };
   useEffect(() => {
-    if (!videoRef.current) {
+    if (!videoElement) {
       return;
     }
-    const videoRefCurrent = videoRef.current;
     const updateTimestamp = () => {
-      if (!videoRefCurrent) {
+      if (!videoElement) {
         return;
       }
       commentSmoothingRef.current = {
-        offset: videoRefCurrent.currentTime ?? 0,
+        offset: videoElement.currentTime ?? 0,
         timestamp: performance.now(),
       };
     };
-    videoRefCurrent.addEventListener("play", updateTimestamp);
-    videoRefCurrent.addEventListener("timeupdate", updateTimestamp);
-    console.log("videoRefCurrent", videoRefCurrent);
+    videoElement.addEventListener("play", updateTimestamp);
+    videoElement.addEventListener("timeupdate", updateTimestamp);
+    console.log("videoRefCurrent", videoElement);
     return () => {
-      videoRefCurrent.removeEventListener("play", updateTimestamp);
-      videoRefCurrent.removeEventListener("timeupdate", updateTimestamp);
+      videoElement.removeEventListener("play", updateTimestamp);
+      videoElement.removeEventListener("timeupdate", updateTimestamp);
     };
-  }, [videoRef]);
+  }, [videoElement]);
   useEffect(() => {
-    if (!canvasRef.current || !videoRef.current || !loaderData.video) {
+    if (!canvasRef.current || !videoElement || !loaderData.video) {
       return;
     }
     niconicommentsRef.current = new NiconiComments(
@@ -97,20 +98,20 @@ export default function Index() {
           commentCount: 0,
         },
       ],
-      { video: videoRef.current, format: "v1" }
+      { video: videoElement, format: "v1" }
     );
     console.log("niconicommentsRef", niconicommentsRef.current);
     return () => {
       niconicommentsRef.current = undefined;
     };
-  }, [loaderData.comments, loaderData.video]);
+  }, [loaderData.comments, loaderData.video, videoElement, canvasRef]);
   useEffect(() => {
     const interval = window.setInterval(() => {
-      if (!videoRef.current || !niconicommentsRef.current) {
+      if (!videoElement || !niconicommentsRef.current) {
         return;
       }
-      const vposMs = videoRef.current.paused
-        ? Math.floor(videoRef.current.currentTime * 1000)
+      const vposMs = videoElement.paused
+        ? Math.floor(videoElement.currentTime * 1000)
         : performance.now() -
           commentSmoothingRef.current.timestamp +
           commentSmoothingRef.current.offset * 1000;
@@ -120,7 +121,7 @@ export default function Index() {
     return () => {
       window.clearInterval(interval);
     };
-  }, [videoRef, niconicommentsRef]);
+  }, [videoElement, niconicommentsRef]);
   return (
     <div className="w-full max-w-3xl mx-auto mt-4 px-4">
       {!loaderData.video ? (
