@@ -50,15 +50,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     if (count > 0 && (page < 1 || page > Math.ceil(count / 5))) {
       return redirect(`/tasks`, { status: 302 });
     }
-    const tasks = (
-      await Task.find()
-        .sort({ createdAt: -1 })
-        .limit(5)
-        .skip((page - 1) * 5)
-        .lean()
-    ).map((task) => task.toObject<ITask>());
+    const tasks = await Task.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .skip((page - 1) * 5)
+      .lean();
     return typedjson({ tasks, count, page }, 200);
-  } catch {
+  } catch (e) {
+    console.error(e);
     return typedjson(
       { page, error: "エラーが発生しました。", tasks: [], count: 0 },
       500

@@ -43,7 +43,8 @@ export const loader: LoaderFunction = async ({ request }) => {
         .lean()
     ).map((video) => video.toObject<IVideo>());
     return typedjson({ videos, count, page }, 200);
-  } catch {
+  } catch (e) {
+    console.error(e);
     return typedjson(
       { page, error: "エラーが発生しました。", tasks: [], count: 0 },
       500
