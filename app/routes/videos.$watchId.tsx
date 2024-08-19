@@ -73,6 +73,7 @@ export default function Index() {
     };
     videoRefCurrent.addEventListener("play", updateTimestamp);
     videoRefCurrent.addEventListener("timeupdate", updateTimestamp);
+    console.log("videoRefCurrent", videoRefCurrent);
     return () => {
       videoRefCurrent.removeEventListener("play", updateTimestamp);
       videoRefCurrent.removeEventListener("timeupdate", updateTimestamp);
@@ -98,6 +99,7 @@ export default function Index() {
       ],
       { video: videoRef.current, format: "v1" }
     );
+    console.log("niconicommentsRef", niconicommentsRef.current);
     return () => {
       niconicommentsRef.current = undefined;
     };
@@ -114,6 +116,7 @@ export default function Index() {
           commentSmoothingRef.current.offset * 1000;
       niconicommentsRef.current.drawCanvas(Math.floor(vposMs / 10));
     }, 1);
+    console.log("interval", interval);
     return () => {
       window.clearInterval(interval);
     };
