@@ -35,13 +35,11 @@ export const loader: LoaderFunction = async ({ request }) => {
     if (count > 0 && (page < 1 || page > Math.ceil(count / 5))) {
       return redirect(`/videos`, { status: 302 });
     }
-    const videos = (
-      await Video.find()
-        .sort({ createdAt: -1 })
-        .limit(5)
-        .skip((page - 1) * 5)
-        .lean()
-    ).map((video) => video.toObject<IVideo>());
+    const videos = await Video.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .skip((page - 1) * 5)
+      .lean();
     return typedjson({ videos, count, page }, 200);
   } catch (e) {
     console.error(e);

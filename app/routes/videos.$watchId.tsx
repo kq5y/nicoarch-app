@@ -40,13 +40,7 @@ export const loader: LoaderFunction = async ({ params }) => {
       .sort({ postedAt: -1 })
       .limit(1000)
       .lean();
-    return typedjson(
-      {
-        video: video.toObject<IVideo>(),
-        comments: comments.map((comment) => comment.toObject<IComment>()),
-      },
-      200
-    );
+    return typedjson({ video, comments }, 200);
   } catch (e) {
     console.error(e);
     return typedjson({ error: "エラーが発生しました。" }, 500);
