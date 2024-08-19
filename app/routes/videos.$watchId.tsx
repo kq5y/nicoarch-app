@@ -2,7 +2,7 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useEffect, useRef } from "react";
 
 import NiconiComments from "@xpadev-net/niconicomments";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/file";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import Comment from "~/models/Comment";
