@@ -64,8 +64,8 @@ export default function Index() {
       ) : (
         <div className="w-full max-w-3xl mx-auto mt-4 px-4">
           <h1 className="text-3xl mb-2">{loaderData.video.title}</h1>
-          <div className="aspect-video bg-zinc-900 w-full max-w-3xl">
-            <div className="w-full h-full flex justify-center absolute top-0 left-0 z-10 pointer-events-none">
+          <div className="relative aspect-video bg-zinc-900 w-full max-w-3xl">
+            <div className="w-full h-full flex justify-center absolute top-0 left-0 z-10 pointer-events-auto">
               <ReactPlayer
                 height="100%"
                 width="auto"
