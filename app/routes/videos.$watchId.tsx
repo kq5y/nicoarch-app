@@ -52,6 +52,28 @@ export default function Index() {
   const niconicommentsRef = useRef<NiconiComments | undefined>(undefined);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const commentSmoothingRef = useRef({ offset: 0, timestamp: 0 });
+  useEffect(() => {
+    if (!videoRef.current) {
+      return;
+    }
+    const videoRefCurrent = videoRef.current;
+    const updateTimestamp = () => {
+      if (!videoRefCurrent) {
+        return;
+      }
+      commentSmoothingRef.current = {
+        offset: videoRefCurrent.currentTime ?? 0,
+        timestamp: performance.now(),
+      };
+    };
+    videoRefCurrent.addEventListener("play", updateTimestamp);
+    videoRefCurrent.addEventListener("timeupdate", updateTimestamp);
+    return () => {
+      videoRefCurrent.removeEventListener("play", updateTimestamp);
+      videoRefCurrent.removeEventListener("timeupdate", updateTimestamp);
+    };
+  }, [videoRef]);
   useEffect(() => {
     if (!canvasRef.current || !videoRef.current || !loaderData.video) {
       return;
@@ -70,7 +92,7 @@ export default function Index() {
           commentCount: 0,
         },
       ],
-      { video: videoRef.current }
+      { video: videoRef.current, format: "v1" }
     );
     return () => {
       niconicommentsRef.current = undefined;
@@ -81,13 +103,17 @@ export default function Index() {
       if (!videoRef.current || !niconicommentsRef.current) {
         return;
       }
-      const vposMs = Math.floor(videoRef.current.currentTime * 1000);
+      const vposMs = videoRef.current.paused
+        ? Math.floor(videoRef.current.currentTime * 1000)
+        : performance.now() -
+          commentSmoothingRef.current.timestamp +
+          commentSmoothingRef.current.offset * 1000;
       niconicommentsRef.current.drawCanvas(Math.floor(vposMs / 10));
     }, 1);
     return () => {
       window.clearInterval(interval);
     };
-  }, []);
+  }, [videoRef, niconicommentsRef]);
   return (
     <div className="w-full max-w-3xl mx-auto mt-4 px-4">
       {!loaderData.video ? (
