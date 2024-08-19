@@ -97,7 +97,7 @@ export default function Index() {
             userId: comment.userId,
             isPremium: comment.isPremium,
             score: comment.score,
-            postedAt: comment.postedAt.toISOString(),
+            postedAt: new Date(comment.postedAt).toISOString(),
             nicoruCount: comment.nicoruCount,
             nicoruId: null,
             source: comment.source,
