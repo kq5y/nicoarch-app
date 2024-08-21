@@ -1,40 +1,26 @@
-# Welcome to Remix!
+# nicoarch-app
 
-- 📖 [Remix docs](https://remix.run/docs)
+[nicoarch](https://github.com/tksnnx/nicoarch.git)<br/>
+[nicoarch-worker](https://github.com/tksnnx/nicoarch-worker.git)
 
-## Development
+ニコニコ動画のアーカイブツールnicoarchのフロントエンド部分
 
-Run the dev server:
+## 使い方
 
-```shellscript
-npm run dev
-```
+### production
 
-## Deployment
+1. [nicoarch](https://github.com/tksnnx/nicoarch.git)の`docker-compose.yml`を用いてツールを起動する。
 
-First, build your app for production:
+### development
 
-```sh
-npm run build
-```
+1. [nicoarch](https://github.com/tksnnx/nicoarch.git)の`docker-compose.dev.yml`を用いて
+   redisとmongoサーバーを起動する。
+2. 下記コマンドを実行し、開発サーバーを起動する。
+   ```sh
+   pnpm install
+   pnpm run dev
+   ```
 
-Then run the app in production mode:
+## ライセンス
 
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+[MIT License](LICENSE)
