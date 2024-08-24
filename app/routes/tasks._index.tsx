@@ -6,13 +6,24 @@ import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import Task from "~/models/Task";
 import connectMongo from "~/utils/mongo";
 
-import type { ITask, Status } from "~/@types/models";
+import type { ITask, Status, TaskType } from "~/@types/models";
 
 interface LoaderData {
   error?: string;
   tasks: ITask[];
   count: number;
   page: number;
+}
+
+function taskTypeString(type: TaskType) {
+  switch (type) {
+    case "new":
+      return "新規";
+    case "update":
+      return "更新";
+    default:
+      return type;
+  }
 }
 
 function statusString(status: Status) {
@@ -94,6 +105,7 @@ export default function Index() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th className="px-6 py-3">動画ID</th>
+                  <th className="px-6 py-3">種類</th>
                   <th className="px-6 py-3">ステータス</th>
                   <th className="px-6 py-3">作成日時</th>
                   <th className="px-6 py-3"></th>
@@ -111,6 +123,7 @@ export default function Index() {
                         task.watchId
                       )}
                     </td>
+                    <td className="px-6 py-3">{taskTypeString(task.type)}</td>
                     <td className="px-6 py-3">
                       {`${statusString(task.status)}${task.status == "comment" && task.commentCount ? "(" + task.commentCount.toString() + ")" : ""}`}
                     </td>

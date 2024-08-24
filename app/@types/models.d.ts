@@ -8,12 +8,15 @@ type Status =
   | "completed"
   | "failed";
 
+type TaskType = "new" | "update";
+
 interface ITask extends Document {
   watchId: string;
   status: Status;
   videoId: Types.ObjectId | null;
   error: string | null;
   commentCount: number | null;
+  type: TaskType;
   createdAt: Date;
   updatedAt: Date;
 }

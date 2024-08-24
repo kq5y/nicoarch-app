@@ -36,6 +36,12 @@ const TaskSchema = new Schema<ITask>(
       required: false,
       default: 0,
     },
+    type: {
+      type: String,
+      required: true,
+      enum: ["new", "update"],
+      default: "new",
+    },
   },
   {
     timestamps: true,
