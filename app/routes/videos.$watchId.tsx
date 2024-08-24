@@ -1,4 +1,5 @@
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 
 import NiconiComments from "@xpadev-net/niconicomments";
@@ -190,6 +191,11 @@ export default function Index() {
               />
               <span>{loaderData.user?.nickname || "Unknown"}</span>
             </div>
+          </div>
+          <div className="w-full flex flex-row gap-2">
+            <Link to={`/tasks/update?watchId=${loaderData.video.watchId}`}>
+              Create Update Task
+            </Link>
           </div>
         </div>
       )}
