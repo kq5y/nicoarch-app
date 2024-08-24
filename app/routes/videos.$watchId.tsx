@@ -6,15 +6,17 @@ import ReactFilePlayer from "react-player/file";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
 import Comment from "~/models/Comment";
+import User from "~/models/User";
 import Video from "~/models/Video";
 import connectMongo from "~/utils/mongo";
 
 import type ReactPlayer from "react-player";
-import type { IComment, IVideo } from "~/@types/models";
+import type { IComment, IUser, IVideo } from "~/@types/models";
 
 interface LoaderData {
   error?: string;
   video?: IVideo;
+  user?: IUser;
   comments?: IComment[];
 }
 
@@ -35,13 +37,16 @@ export const loader: LoaderFunction = async ({ params }) => {
     if (!video) {
       return typedjson({ error: "動画が存在しません。" }, 404);
     }
+    const user = await User.findOne({
+      _id: video.ownerId,
+    }).lean();
     const comments = await Comment.find({
       videoId: video._id,
     })
       .sort({ postedAt: -1 })
       .limit(1000)
       .lean();
-    return typedjson({ video, comments }, 200);
+    return typedjson({ video, user, comments }, 200);
   } catch (e) {
     console.error(e);
     return typedjson({ error: "エラーが発生しました。" }, 500);
@@ -140,8 +145,7 @@ export default function Index() {
           <p>{loaderData.error || "動画が見つかりませんでした。"}</p>
         </div>
       ) : (
-        <div className="w-full max-w-3xl mx-auto mt-4 px-4">
-          <h1 className="text-3xl mb-2">{loaderData.video.title}</h1>
+        <div className="w-full max-w-3xl mx-auto mt-4 px-4 flex flex-col gap-2">
           <div className="relative aspect-video bg-zinc-900 w-full max-w-3xl">
             <div className="w-full h-full flex justify-center absolute top-0 left-0 z-10 pointer-events-auto">
               <ReactFilePlayer
@@ -159,6 +163,32 @@ export default function Index() {
                 width={1920}
                 height={1080}
               />
+            </div>
+          </div>
+          <div className="w-full flex flex-row h-14">
+            <div className="w-3/4 h-full">
+              <h1 className="text-xl w-full text-wrap">
+                {loaderData.video.title}
+              </h1>
+              <div className="w-full flex flex-row gap-2 text-sm text-gray-700">
+                <span>{loaderData.video.registeredAt.toLocaleString()}</span>
+                <span>view:{loaderData.video.count.view.toLocaleString()}</span>
+                <span>
+                  comment:{loaderData.video.count.comment.toLocaleString()}
+                </span>
+                <span>
+                  mylist:{loaderData.video.count.mylist.toLocaleString()}
+                </span>
+                <span>like:{loaderData.video.count.like.toLocaleString()}</span>
+              </div>
+            </div>
+            <div className="w-1/4 h-full p-2 flex flex-row gap-2">
+              <img
+                src={`/contents/image/icon/${loaderData.user?.contentId}.jpg`}
+                alt="icon"
+                className="w-12 h-12 rounded-full bg-gray-500"
+              />
+              <span>{loaderData.user?.nickname || "Unknown"}</span>
             </div>
           </div>
         </div>
