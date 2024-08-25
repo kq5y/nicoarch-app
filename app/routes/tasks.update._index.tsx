@@ -54,7 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
       await connectMongo();
       const remainTasks = await Task.find({
         watchId,
-        status: { $not: { $or: ["completed", "failed"] } },
+        status: { $nin: ["completed", "failed"] },
       }).countDocuments();
       if (remainTasks > 0) {
         return { error: "すでにタスクが存在します。" };
