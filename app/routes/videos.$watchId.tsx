@@ -202,24 +202,26 @@ export default function Index() {
                 {loaderData.video.title}
               </h1>
               <div className="w-full flex flex-row gap-x-2 text-sm text-gray-700 flex-wrap items-center">
-                <div>{loaderData.video.registeredAt.toLocaleString("ja")}</div>
-                <div className="flex flex-row gap-x-2 flex-wrap">
+                <div>
+                  {loaderData.video.registeredAt.toLocaleString("ja-JP")}
+                </div>
+                <div className="flex flex-row gap-x-3 flex-wrap">
                   <div className="flex flex-row gap-1 items-center">
-                    <RiPlayLargeFill size={20} />
+                    <RiPlayLargeFill size={18} />
                     <span>{loaderData.video.count.view.toLocaleString()}</span>
                   </div>
                   <div className="flex flex-row gap-1 items-center">
-                    <RiChat4Fill size={20} />
+                    <RiChat4Fill size={18} />
                     <span>
                       {loaderData.video.count.comment.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-row gap-1 items-center">
-                    <RiHeartFill size={20} />
+                    <RiHeartFill size={18} />
                     <span>{loaderData.video.count.like.toLocaleString()}</span>
                   </div>
                   <div className="flex flex-row gap-1 items-center">
-                    <RiFolderFill size={20} />
+                    <RiFolderFill size={18} />
                     <span>
                       {loaderData.video.count.mylist.toLocaleString()}
                     </span>
