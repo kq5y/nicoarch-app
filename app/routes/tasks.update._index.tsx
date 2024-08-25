@@ -94,7 +94,7 @@ export default function Index() {
             id="watchId"
             value={loaderData.watchId}
             required
-            disabled
+            readOnly
           />
         </div>
         <div className="flex mb-2">
