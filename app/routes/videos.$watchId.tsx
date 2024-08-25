@@ -2,6 +2,12 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 
+import {
+  RiChat4Fill,
+  RiFolderFill,
+  RiHeartFill,
+  RiPlayFill,
+} from "@remixicon/react";
 import NiconiComments from "@xpadev-net/niconicomments";
 import ReactFilePlayer from "react-player/file";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -172,15 +178,23 @@ export default function Index() {
                 {loaderData.video.title}
               </h1>
               <div className="w-full flex flex-row gap-2 text-sm text-gray-700">
-                <span>{loaderData.video.registeredAt.toLocaleString()}</span>
-                <span>view:{loaderData.video.count.view.toLocaleString()}</span>
-                <span>
-                  comment:{loaderData.video.count.comment.toLocaleString()}
-                </span>
-                <span>
-                  mylist:{loaderData.video.count.mylist.toLocaleString()}
-                </span>
-                <span>like:{loaderData.video.count.like.toLocaleString()}</span>
+                <div>{loaderData.video.registeredAt.toLocaleString("ja")}</div>
+                <div className="flex flex-row gap-1">
+                  <RiPlayFill />
+                  <span>{loaderData.video.count.view.toLocaleString()}</span>
+                </div>
+                <div className="flex flex-row gap-1">
+                  <RiChat4Fill />
+                  <span>{loaderData.video.count.comment.toLocaleString()}</span>
+                </div>
+                <div className="flex flex-row gap-1">
+                  <RiHeartFill />
+                  <span>{loaderData.video.count.like.toLocaleString()}</span>
+                </div>
+                <div className="flex flex-row gap-1">
+                  <RiFolderFill />
+                  <span>{loaderData.video.count.mylist.toLocaleString()}</span>
+                </div>
               </div>
             </div>
             <div className="w-1/4 h-full p-2 flex flex-row gap-2">
