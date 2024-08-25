@@ -203,7 +203,7 @@ export default function Index() {
               </h1>
               <div className="w-full flex flex-row gap-x-2 text-sm text-gray-700 flex-wrap items-center">
                 <div>
-                  {loaderData.video.registeredAt.toLocaleString("ja-JP")}
+                  {new Date(loaderData.video.registeredAt).toLocaleString()}
                 </div>
                 <div className="flex flex-row gap-x-3 flex-wrap">
                   <div className="flex flex-row gap-1 items-center">
