@@ -6,7 +6,7 @@ import {
   RiChat4Fill,
   RiFolderFill,
   RiHeartFill,
-  RiPlayFill,
+  RiPlayLargeFill,
 } from "@remixicon/react";
 import NiconiComments from "@xpadev-net/niconicomments";
 import ReactFilePlayer from "react-player/file";
@@ -172,30 +172,30 @@ export default function Index() {
               />
             </div>
           </div>
-          <div className="w-full flex flex-row min-h-14">
-            <div className="w-3/4 min-h-14">
+          <div className="w-full flex flex-row min-h-14 flex-wrap">
+            <div className="min-w-3/4 min-h-14 flex flex-col">
               <h1 className="text-xl w-full text-wrap">
                 {loaderData.video.title}
               </h1>
-              <div className="w-full flex flex-row gap-2 text-sm text-gray-700 flex-wrap">
+              <div className="w-full flex flex-row gap-x-2 text-sm text-gray-700 flex-wrap items-center">
                 <div>{loaderData.video.registeredAt.toLocaleString("ja")}</div>
-                <div className="flex flex-row gap-2 flex-wrap">
-                  <div className="flex flex-row gap-1">
-                    <RiPlayFill />
+                <div className="flex flex-row gap-x-2 flex-wrap">
+                  <div className="flex flex-row gap-1 items-center">
+                    <RiPlayLargeFill size={20} />
                     <span>{loaderData.video.count.view.toLocaleString()}</span>
                   </div>
-                  <div className="flex flex-row gap-1">
-                    <RiChat4Fill />
+                  <div className="flex flex-row gap-1 items-center">
+                    <RiChat4Fill size={20} />
                     <span>
                       {loaderData.video.count.comment.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex flex-row gap-1">
-                    <RiHeartFill />
+                  <div className="flex flex-row gap-1 items-center">
+                    <RiHeartFill size={20} />
                     <span>{loaderData.video.count.like.toLocaleString()}</span>
                   </div>
-                  <div className="flex flex-row gap-1">
-                    <RiFolderFill />
+                  <div className="flex flex-row gap-1 items-center">
+                    <RiFolderFill size={20} />
                     <span>
                       {loaderData.video.count.mylist.toLocaleString()}
                     </span>
@@ -203,7 +203,7 @@ export default function Index() {
                 </div>
               </div>
             </div>
-            <div className="w-1/4 h-14 p-2 flex flex-row gap-2 items-center">
+            <div className="min-w-1/4 h-14 p-2 flex flex-row gap-2 items-center">
               <img
                 src={`/contents/image/icon/${loaderData.user?.contentId}.jpg`}
                 alt="icon"
