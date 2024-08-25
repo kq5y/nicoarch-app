@@ -25,6 +25,7 @@ interface LoaderData {
   video?: IVideo;
   user?: IUser;
   comments?: IComment[];
+  ownerComments?: IComment[];
 }
 
 export const meta: MetaFunction = () => {
@@ -47,13 +48,21 @@ export const loader: LoaderFunction = async ({ params }) => {
     const user = await User.findOne({
       _id: video.ownerId,
     }).lean();
-    const comments = await Comment.find({
+    const ownerComments = await Comment.find({
       videoId: video._id,
+      fork: "owner",
     })
       .sort({ postedAt: -1 })
       .limit(1000)
       .lean();
-    return typedjson({ video, user, comments }, 200);
+    const comments = await Comment.find({
+      videoId: video._id,
+      fork: { $ne: "owner" },
+    })
+      .sort({ postedAt: -1 })
+      .limit(1000)
+      .lean();
+    return typedjson({ video, user, comments, ownerComments });
   } catch (e) {
     console.error(e);
     return typedjson({ error: "エラーが発生しました。" }, 500);
@@ -70,6 +79,23 @@ export default function Index() {
   const commentSmoothingRef = useRef({ offset: 0, timestamp: 0 });
   const handlePlayerReady = (player: ReactPlayer) => {
     setVideoElement(player.getInternalPlayer() as HTMLVideoElement);
+  };
+  const comment2v1 = (comment: IComment) => {
+    return {
+      id: comment.commentId,
+      no: comment.no,
+      vposMs: comment.vposMs,
+      body: comment.body,
+      commands: comment.commands,
+      userId: comment.userId,
+      isPremium: comment.isPremium,
+      score: comment.score,
+      postedAt: new Date(comment.postedAt).toISOString(),
+      nicoruCount: comment.nicoruCount,
+      nicoruId: null,
+      source: comment.source,
+      isMyPost: false,
+    };
   };
   useEffect(() => {
     if (!videoElement) {
@@ -100,23 +126,15 @@ export default function Index() {
       canvasRef.current,
       [
         {
-          comments: (loaderData.comments || []).map((comment) => ({
-            id: comment.commentId,
-            no: comment.no,
-            vposMs: comment.vposMs,
-            body: comment.body,
-            commands: comment.commands,
-            userId: comment.userId,
-            isPremium: comment.isPremium,
-            score: comment.score,
-            postedAt: new Date(comment.postedAt).toISOString(),
-            nicoruCount: comment.nicoruCount,
-            nicoruId: null,
-            source: comment.source,
-            isMyPost: false,
-          })),
+          comments: (loaderData.comments || []).map(comment2v1),
           id: "0",
           fork: "main",
+          commentCount: 0,
+        },
+        {
+          comments: (loaderData.ownerComments || []).map(comment2v1),
+          id: "1",
+          fork: "owner",
           commentCount: 0,
         },
       ],
@@ -126,7 +144,13 @@ export default function Index() {
     return () => {
       niconicommentsRef.current = undefined;
     };
-  }, [loaderData.comments, loaderData.video, videoElement, canvasRef]);
+  }, [
+    loaderData.comments,
+    loaderData.ownerComments,
+    loaderData.video,
+    videoElement,
+    canvasRef,
+  ]);
   useEffect(() => {
     const interval = window.setInterval(() => {
       if (!videoElement || !niconicommentsRef.current) {
