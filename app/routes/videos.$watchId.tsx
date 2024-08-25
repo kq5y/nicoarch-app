@@ -172,38 +172,46 @@ export default function Index() {
               />
             </div>
           </div>
-          <div className="w-full flex flex-row h-14">
-            <div className="w-3/4 h-full">
+          <div className="w-full flex flex-row min-h-14">
+            <div className="w-3/4 min-h-14">
               <h1 className="text-xl w-full text-wrap">
                 {loaderData.video.title}
               </h1>
-              <div className="w-full flex flex-row gap-2 text-sm text-gray-700">
+              <div className="w-full flex flex-row gap-2 text-sm text-gray-700 flex-wrap">
                 <div>{loaderData.video.registeredAt.toLocaleString("ja")}</div>
-                <div className="flex flex-row gap-1">
-                  <RiPlayFill />
-                  <span>{loaderData.video.count.view.toLocaleString()}</span>
-                </div>
-                <div className="flex flex-row gap-1">
-                  <RiChat4Fill />
-                  <span>{loaderData.video.count.comment.toLocaleString()}</span>
-                </div>
-                <div className="flex flex-row gap-1">
-                  <RiHeartFill />
-                  <span>{loaderData.video.count.like.toLocaleString()}</span>
-                </div>
-                <div className="flex flex-row gap-1">
-                  <RiFolderFill />
-                  <span>{loaderData.video.count.mylist.toLocaleString()}</span>
+                <div className="flex flex-row gap-2 flex-wrap">
+                  <div className="flex flex-row gap-1">
+                    <RiPlayFill />
+                    <span>{loaderData.video.count.view.toLocaleString()}</span>
+                  </div>
+                  <div className="flex flex-row gap-1">
+                    <RiChat4Fill />
+                    <span>
+                      {loaderData.video.count.comment.toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex flex-row gap-1">
+                    <RiHeartFill />
+                    <span>{loaderData.video.count.like.toLocaleString()}</span>
+                  </div>
+                  <div className="flex flex-row gap-1">
+                    <RiFolderFill />
+                    <span>
+                      {loaderData.video.count.mylist.toLocaleString()}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="w-1/4 h-full p-2 flex flex-row gap-2">
+            <div className="w-1/4 h-14 p-2 flex flex-row gap-2 items-center">
               <img
                 src={`/contents/image/icon/${loaderData.user?.contentId}.jpg`}
                 alt="icon"
-                className="w-12 h-12 rounded-full bg-gray-500"
+                className="w-10 h-10 rounded-full bg-gray-500"
               />
-              <span>{loaderData.user?.nickname || "Unknown"}</span>
+              <span className="text-wrap flex-1">
+                {loaderData.user?.nickname || "Unknown"}
+              </span>
             </div>
           </div>
           <div className="w-full flex flex-row gap-2">
