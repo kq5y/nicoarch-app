@@ -7,13 +7,17 @@ import {
 
 import fs from "fs";
 
-if (!fs.existsSync("/contents")) fs.mkdirSync("/contents");
-if (!fs.existsSync("/contents/image")) fs.mkdirSync("/contents/image");
-if (!fs.existsSync("/contents/image/icon"))
-  fs.mkdirSync("/contents/image/icon");
-if (!fs.existsSync("/contents/image/thumbnail"))
-  fs.mkdirSync("/contents/image/thumbnail");
-if (!fs.existsSync("/contents/video")) fs.mkdirSync("/contents/video");
+const CONTENTS_DIR =
+  process.env.NODE_ENV === "development" ? "./contents" : "/contents";
+if (!fs.existsSync(CONTENTS_DIR)) fs.mkdirSync(CONTENTS_DIR);
+if (!fs.existsSync(CONTENTS_DIR + "/image"))
+  fs.mkdirSync(CONTENTS_DIR + "/image");
+if (!fs.existsSync(CONTENTS_DIR + "/image/icon"))
+  fs.mkdirSync(CONTENTS_DIR + "/image/icon");
+if (!fs.existsSync(CONTENTS_DIR + "/image/thumbnail"))
+  fs.mkdirSync(CONTENTS_DIR + "/image/thumbnail");
+if (!fs.existsSync(CONTENTS_DIR + "/video"))
+  fs.mkdirSync(CONTENTS_DIR + "/video");
 
 export const loader: LoaderFunction = async () => {
   return json(
@@ -45,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
   const uploadHandler = unstable_createFileUploadHandler({
     maxPartSize: 5 * 1024 * 1024 * 1024,
-    directory: "/contents/video",
+    directory: CONTENTS_DIR + "/video",
     file: () => `${assetId}.mp4`,
   });
   try {
