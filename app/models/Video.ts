@@ -62,7 +62,8 @@ const VideoSchema = new Schema<IVideo>(
     taskId: {
       type: Schema.Types.ObjectId,
       ref: "Task",
-      required: true,
+      required: false,
+      default: null,
     },
     contentId: {
       type: String,
