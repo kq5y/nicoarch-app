@@ -15,6 +15,8 @@ import Video from "~/models/Video";
 import { CONTENTS_DIR } from "~/utils/contents";
 import connectMongo from "~/utils/mongo";
 
+import type { VideoType } from "~/@types/models";
+
 interface ActionData {
   error?: string;
 }
@@ -55,7 +57,7 @@ export const action: ActionFunction = async ({ request }) => {
     console.error(error);
     return { error: "エラーが発生しました。" };
   }
-  const videoObject = {
+  const videoObject: VideoType = {
     title: formData.get("title") as string,
     watchId: formData.get("watchId") as string,
     registeredAt: new Date(formData.get("registeredAt") as string),

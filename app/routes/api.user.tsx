@@ -7,6 +7,8 @@ import User from "~/models/User";
 import { CONTENTS_DIR } from "~/utils/contents";
 import connectMongo from "~/utils/mongo";
 
+import type { UserType } from "~/@types/models";
+
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
@@ -91,12 +93,12 @@ export const action: ActionFunction = async ({ request }) => {
       500
     );
   }
-  const userObject = {
-    userId: Number(formData.get("userId")),
-    nickname: formData.get("nickname"),
-    description: formData.get("description"),
-    registeredVersion: Number(formData.get("registeredVersion")),
-    contentId: formData.get("contentId"),
+  const userObject: UserType = {
+    userId: Number(formData.get("userId") as string),
+    nickname: formData.get("nickname") as string,
+    description: formData.get("description") as string,
+    registeredVersion: formData.get("registeredVersion") as string,
+    contentId: formData.get("contentId") as string,
   };
   try {
     await connectMongo();

@@ -1,6 +1,6 @@
 import type { Document, Types } from "mongoose";
 
-type Status =
+type TaskStatusEnum =
   | "queued"
   | "fetching"
   | "downloading"
@@ -8,28 +8,32 @@ type Status =
   | "completed"
   | "failed";
 
-type TaskType = "new" | "update";
+type TaskTypeEnum = "new" | "update";
 
-interface ITask extends Document {
+interface TaskType {
   watchId: string;
-  status: Status;
-  videoId: Types.ObjectId | null;
-  error: string | null;
-  commentCount: number | null;
-  type: TaskType;
-  createdAt: Date;
-  updatedAt: Date;
+  status: TaskStatusEnum;
+  videoId?: Types.ObjectId | null;
+  error?: string | null;
+  commentCount?: number | null;
+  type: TaskTypeEnum;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-interface IUser extends Document {
+interface ITask extends Document, TaskType {}
+
+interface UserType {
   userId: number;
   nickname: string;
   description: string;
   registeredVersion: string;
   contentId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
+interface IUser extends Document, UserType {}
 
 interface ICount {
   view: number;
@@ -38,22 +42,24 @@ interface ICount {
   like: number;
 }
 
-interface IVideo extends Document {
+type VideoType = {
   title: string;
   watchId: string;
   registeredAt: Date;
   count: ICount;
-  ownerId: Types.ObjectId;
+  ownerId?: Types.ObjectId | null;
   duration: number;
   description: string;
   shortDescription: string;
-  taskId: Types.ObjectId;
+  taskId?: Types.ObjectId | null;
   contentId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
-interface IComment extends Document {
+interface IVideo extends Document, VideoType {}
+
+type CommentType = {
   commentId: string;
   body: string;
   commands: string[];
@@ -68,4 +74,8 @@ interface IComment extends Document {
   videoId: Types.ObjectId;
   threadId: string;
   fork: string;
-}
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+interface IComment extends Document, CommentType {}
