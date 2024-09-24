@@ -4,17 +4,20 @@ import {
   type MetaFunction,
 } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { writeFile } from "fs/promises";
 
 import { v4 as uuidv4 } from "uuid";
 
 import Dropzone from "~/components/Dropzone";
+import UserSetter from "~/components/UserSetter";
+import User from "~/models/User";
 import Video from "~/models/Video";
 import { CONTENTS_DIR } from "~/utils/contents";
 import connectMongo from "~/utils/mongo";
 
+import type { Types } from "mongoose";
 import type { VideoType } from "~/@types/models";
 
 interface ActionData {
@@ -45,6 +48,22 @@ export const action: ActionFunction = async ({ request }) => {
   ) {
     return { error: "不正なリクエストです" };
   }
+  let ownerId: unknown | undefined = undefined;
+  if (formData.has("ownerUserId")) {
+    try {
+      await connectMongo();
+      const user = await User.findOne({
+        userId: formData.get("ownerUserId"),
+      });
+      if (!user) {
+        return { error: "ユーザーが見つかりません" };
+      }
+      ownerId = user._id;
+    } catch (error) {
+      console.error(error);
+      return { error: "エラーが発生しました。" };
+    }
+  }
   try {
     const thumbnailDataBuffer = Buffer.from(
       await (formData.get("thumbnailData") as File).arrayBuffer()
@@ -71,6 +90,7 @@ export const action: ActionFunction = async ({ request }) => {
     description: formData.get("description") as string,
     shortDescription: formData.get("shortDescription") as string,
     contentId: formData.get("contentId") as string,
+    ownerId: ownerId ? (ownerId as Types.ObjectId) : undefined,
   };
   try {
     await connectMongo();
@@ -89,7 +109,9 @@ export default function Upload() {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | undefined>(undefined);
   const [title, setTitle] = useState<string>("");
+  const [ownerUserId, setOwnerUserId] = useState<string | undefined>(undefined);
   const [contentId, setContentId] = useState<string | undefined>(undefined);
+  const formRef = useRef<HTMLFormElement>(null);
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (uploadStatus !== "Ready") {
@@ -142,6 +164,9 @@ export default function Upload() {
     },
     [title, uploadStatus]
   );
+  const handleFormSubmit = async () => {
+    formRef.current?.submit();
+  };
   return (
     <div className="w-full max-w-3xl mx-auto mt-4 px-4">
       <h1 className="text-3xl mb-2">Upload Video</h1>
@@ -158,7 +183,7 @@ export default function Upload() {
         disabled={uploadStatus === "Complete"}
         filename={filename}
       />
-      <form method="post">
+      <form method="post" ref={formRef}>
         <div className="flex items-center mb-2">
           <label className="w-1/3 block font-bold" htmlFor="title">
             タイトル
@@ -288,18 +313,22 @@ export default function Upload() {
             required
           />
         </div>
-        <div className="flex mb-2">
-          <input type="hidden" name="contentId" value={contentId} required />
-          <input type="hidden" name="ownerId" />
-          <button
-            className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
-            type="submit"
-            disabled={uploadStatus !== "Complete"}
-          >
-            送信
-          </button>
-        </div>
+        <input type="hidden" name="contentId" value={contentId} required />
+        <input type="hidden" name="ownerUserId" value={ownerUserId} />
       </form>
+      <div className="flex items-center mb-2">
+        <UserSetter userId={ownerUserId} setUserId={setOwnerUserId} />
+      </div>
+      <div className="flex mb-2">
+        <button
+          className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
+          type="button"
+          disabled={uploadStatus !== "Complete"}
+          onClick={handleFormSubmit}
+        >
+          送信
+        </button>
+      </div>
     </div>
   );
 }
