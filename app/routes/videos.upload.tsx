@@ -8,14 +8,13 @@ import { useCallback, useState } from "react";
 
 import { writeFile } from "fs/promises";
 
-import { useDropzone } from "react-dropzone-esm";
 import { v4 as uuidv4 } from "uuid";
 
+import Dropzone from "~/components/Dropzone";
 import Video from "~/models/Video";
 import { CONTENTS_DIR } from "~/utils/contents";
 import connectMongo from "~/utils/mongo";
 
-type UploadStatusType = "Ready" | "Uploading" | "Complete";
 interface ActionData {
   error?: string;
 }
@@ -80,46 +79,6 @@ export const action: ActionFunction = async ({ request }) => {
   }
   return redirect(`/videos`);
 };
-
-interface DropzoneProps {
-  onDrop: (acceptedFiles: File[]) => void;
-  uploadProgress: number;
-  uploadStatus: UploadStatusType;
-  disabled?: boolean;
-  filename?: string;
-}
-
-function Dropzone(params: DropzoneProps) {
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop: params.onDrop,
-    accept: {
-      "video/mp4": [".mp4"],
-    },
-    multiple: false,
-    disabled: params.disabled,
-  });
-  return (
-    <div
-      {...getRootProps()}
-      className={`mb-2 h-32 flex items-center justify-center border-2 border-gray-200 rounded ${params.disabled ? "bg-gray-100" : "bg-white cursor-pointer"}`}
-    >
-      <input {...getInputProps()} />
-      {params.uploadStatus === "Ready" && (
-        <p className="select-none">MP4ファイルをドロップ(最大5GB)</p>
-      )}
-      {params.uploadStatus === "Uploading" && (
-        <p className="select-none">アップロード中 {params.uploadProgress}%</p>
-      )}
-      {params.uploadStatus === "Complete" && (
-        <p className="select-none text-center">
-          アップロード完了
-          <br />
-          {params.filename}
-        </p>
-      )}
-    </div>
-  );
-}
 
 export default function Upload() {
   const actionData = useActionData<ActionData>();
