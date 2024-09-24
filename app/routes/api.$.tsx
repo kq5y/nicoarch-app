@@ -4,7 +4,10 @@ import { json } from "@remix-run/node";
 export const loader: LoaderFunction = async () => {
   return json(
     {
-      errorCode: "NOT_FOUND",
+      meta: {
+        status: 404,
+        errorCode: "NOT_FOUND",
+      },
     },
     404
   );
@@ -13,7 +16,10 @@ export const loader: LoaderFunction = async () => {
 export const action: ActionFunction = async () => {
   return json(
     {
-      errorCode: "NOT_FOUND",
+      meta: {
+        status: 404,
+        errorCode: "NOT_FOUND",
+      },
     },
     404
   );

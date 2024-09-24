@@ -167,7 +167,9 @@ export default function Upload() {
           setUploadError(null);
           setUploadStatus("Complete");
         } else {
-          setUploadError("アップロードに失敗しました。:" + response.errorCode);
+          setUploadError(
+            "アップロードに失敗しました。:" + response.meta.errorCode
+          );
           setUploadStatus("Ready");
         }
       };
